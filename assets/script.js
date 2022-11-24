@@ -16,3 +16,8 @@ searchButtonEl.on('click', function () {
     localStorage.setItem("state", selectedState);
     document.location = "./results.html";  
 });
+
+//For Materialize dropdown
+$(document).ready(function(){
+    $('select').formSelect()
+})
