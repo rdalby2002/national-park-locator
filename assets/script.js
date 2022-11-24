@@ -18,3 +18,8 @@ searchButtonEl.on('click', function (event) {
     localStorage.setItem("state", selectedState);
     document.location = "./results.html";  
 });
+
+//For Materialize dropdown
+$(document).ready(function(){
+    $('select').formSelect()
+})
