@@ -7,3 +7,18 @@ header h1 {
 .container h2 {
     font-size: 28px;
 }
+
+
+.center-box{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#map{
+    width: 200px;
+    height: 200px;
+    margin: 0px;
+    padding: 0px;
+}

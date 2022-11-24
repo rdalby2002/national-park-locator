@@ -5,6 +5,8 @@ var npsBaseUrl = "https://developer.nps.gov/api/v1";
 var selectedStateAbbr = localStorage.getItem("stateAbbr");
 var selectedState = localStorage.getItem("state");
 const resultLocationHdr = document.getElementById("location-hdr");
+let latLongArr = [];
+
 
 
 function init() {
@@ -24,11 +26,27 @@ function init() {
 
             for (let x in data.data) {
                 resultsListEl.append($("<li>" + data.data[x].fullName + "</li>"));
+
+                latLongArr.push(data.data[x].latitude + ',' + data.data[x].longitude);
             }
+            console.log(latLongArr);
+
         });
+
+        initMap();
 }
 
+let map, infoWindow;
 
-
+function initMap() {
+    const directionsRenderer = new google.maps.DirectionsRenderer();
+    const directionsService = new google.maps.DirectionsService();
+    const map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 41.85, lng: -87.65},
+      zoom: 8,
+      //mapTypeId: google.maps.MapTypeId.ROADMAP,
+      disableDefaultUI: true,
+    });
+  };
 // Page initialization
 init();
