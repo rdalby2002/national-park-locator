@@ -2,12 +2,16 @@ const NPS_API_KEY = "QknvTF8nyaOfZvolB7zyEiWeLS7BcVcFZ1omLTe6";
 const MAPS_API_KEY = "AIzaSyCNoCGvv588RGUOYyIPoRXZlS1SezWenwk";
 var resultsListEl = $("#results-list");
 var npsBaseUrl = "https://developer.nps.gov/api/v1";
-var selectedState = localStorage.getItem("stateAbbr");
+var selectedStateAbbr = localStorage.getItem("stateAbbr");
+var selectedState = localStorage.getItem("state");
+const resultLocationHdr = document.getElementById("location-hdr");
 
 
 function init() {
+
+    resultLocationHdr.append(selectedState);
     
-    fetch(npsBaseUrl + "/parks?stateCode=" + selectedState + "&api_key=" + NPS_API_KEY)
+    fetch(npsBaseUrl + "/parks?stateCode=" + selectedStateAbbr + "&api_key=" + NPS_API_KEY)
         .then(function (response) {
             return response.json();
         })
