@@ -9,10 +9,12 @@ var selectedState = "";
 var npsBaseUrl = "https://developer.nps.gov/api/v1";
 var parkList = {};
 
-searchButtonEl.on('click', function () {
+searchButtonEl.on('click', function (event) {
     event.preventDefault();
-    selectedState = stateDropdownEl.val();
-    console.log(selectedState);
+    selectedStateAbbr = stateDropdownEl.val();
+    selectedState = $('#state-dropdown option:selected').text();
+    console.log(selectedStateAbbr);
+    localStorage.setItem("stateAbbr", selectedStateAbbr);
     localStorage.setItem("state", selectedState);
     document.location = "./results.html";  
 });
