@@ -12,21 +12,21 @@ header h1 {
 .center-box{
     display: flex;
     justify-content: center;
-    width: 100%;
-    margin: 2%;
-    padding: 2%;
+    width: 90vw;
+    height: 50vh;
+    margin: auto;
+    padding: 1em;
 }
 #map{
-    width: 400px;
-    height: 400px;
+    width: 80%;
+    height: 100%;
     margin: 0px;
     padding: 0px;
 }
 
 #text-directions {
     overflow: scroll;
-    height: 400px;
-    
+    width: 20%;
     margin: 0px;
     padding: 0px;
 }

@@ -7,6 +7,7 @@ var selectedState = localStorage.getItem("state");
 const resultLocationHdr = document.getElementById("location-hdr");
 let textDirPanel = document.getElementById('text-directions');
 let latLongArr = [];
+let mapBox = document.getElementById('map-box-button')
 
 
 
@@ -55,53 +56,51 @@ function initMap() {
     mapController(map, directionsRenderer, directionsService);
 };
 
-function calcRoute(map, directionsRenderer, directionsService) {
-    var start = {lat: 32.19831758, lng: -84.12988898};
-    var end = {lat: 33.95370717, lng: -84.59214186};
+function calcRoute(map, directionsRenderer, directionsService, pos) {
+    mapBox.style.display = "none";
+    var start = pos;
+    var end = { lat: 33.95370717, lng: -84.59214186 };
     var request = {
-      origin: start,
-      destination: end,
-      travelMode: 'DRIVING'
+        origin: start,
+        destination: end,
+        travelMode: 'DRIVING'
     };
-    directionsService.route(request, function(result, status) {
-      if (status == 'OK') {
-        directionsRenderer.setMap(map)
-        directionsRenderer.setDirections(result);
-        directionsRenderer.setPanel(textDirPanel);
-      }
-      console.log(result);
+    directionsService.route(request, function (result, status) {
+        if (status == 'OK') {
+            directionsRenderer.setMap(map)
+            directionsRenderer.setDirections(result);
+            directionsRenderer.setPanel(textDirPanel);
+        }
+        console.log(result);
     });
     console.log("calculated route");
     console.log(map);
 
-  }
+}
 
 locationButton.textContent = "Pan to Current Location";
 locationButton.classList.add("custom-map-control-button");
-let mapBox = document.getElementById('map-box-button')
 mapBox.appendChild(locationButton)
 
 function mapController(map, directionsRenderer, directionsService) {
-    locationButton.addEventListener("click", calcRoute.bind(null, map, directionsRenderer, directionsService), false);
-    
-    //() => {
 
-    //     if (navigator.geolocation) {
-    //         navigator.geolocation.getCurrentPosition(
-    //             (position) => {
-    //                 const pos = {
-    //                     lat: position.coords.latitude,
-    //                     lng: position.coords.longitude,
-    //                 }
+    if (navigator.geolocation) {
+        let p = navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                }
 
-    //                 console.log(pos);
-    //                 map.setCenter(pos);
-    //                 map.setZoom(18);
-    //             })
-    //     }
-    // });
-}
+                console.log(pos);
+                map.setCenter(pos);
+                map.setZoom(18);
+
+                locationButton.addEventListener("click", calcRoute.bind(null, map, directionsRenderer, directionsService, pos), false);
+                console.log(pos);
+                
+            })    
+    }}
 
 
 // Page initialization
-
