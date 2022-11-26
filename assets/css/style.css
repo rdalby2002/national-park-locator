@@ -13,12 +13,20 @@ header h1 {
     display: flex;
     justify-content: center;
     width: 100%;
+    margin: 2%;
+    padding: 2%;
+}
+#map{
+    width: 400px;
+    height: 400px;
     margin: 0px;
     padding: 0px;
 }
-#map{
-    width: 200px;
-    height: 200px;
+
+#text-directions {
+    overflow: scroll;
+    height: 400px;
+    
     margin: 0px;
     padding: 0px;
 }
