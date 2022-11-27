@@ -4,6 +4,38 @@ header h1 {
     padding: 20px 0px 10px 5px;
 }
 
-.container h2 {
+.select-message {
     font-size: 28px;
+    text-align: center;
+    margin-top: 15px;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+}
+.content {
+    padding: 10px 10px 30px 10px;
+    margin: 30px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.form-container {
+    width: 30%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 15px;
+}
+
+.state-dropdown {
+    width: fit-content;
+}
+
+.content-container {
+    height: 600px;
+    align-items: center;
 }
