@@ -31,7 +31,7 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
 
 
             for (let x in data.data) {
-                resultsListEl.append($("<li><button id=btn-" + x + ">" + data.data[x].fullName + " </button></li>"));
+                resultsListEl.append($("<li class='park-btn orange-text deep-orange darken-2 text-lighten-5 center-align'><button id=btn-" + x + ">" + data.data[x].fullName + " </button></li>"));
 
             }
 
@@ -130,6 +130,7 @@ function getLocation(map, directionsRenderer, directionsService, clientLocation,
     inputEl.id = 'start-input';
     buttonEl.id = 'start-button-custom-search';
     buttonEl.innerText = 'Search';
+    buttonEl.setAttribute('class', 'deep-orange darken-2 orange-text text-lighten-5')
     startInputBox.appendChild(inputEl);
     startInputBox.appendChild(buttonEl);
 
