@@ -12,6 +12,7 @@ let startInputBox = document.getElementById('start-input-box');
 
 
 
+
 function init(map, directionsRenderer, directionsService, clientLocation) {
     console.log("init has ran");
 
@@ -41,11 +42,20 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
                 for (let i = 0; i < data.data.length; i++) {
 
                     document.getElementById('btn-' + i).addEventListener('click', () => {
-                        let lat = Number(data.data[i].latitude)
+                        let lat = Number(data.data[i].latitude);
                         let lng = Number(data.data[i].longitude);
 
                         let endPos = { lat: lat, lng: lng };
                         console.log(endPos);
+
+                        let parkInfoList = document.getElementById('park-info-list');
+                        parkInfoList.style.display = "flex";
+
+                        let imgLocation = document.getElementById('park-info-img')
+                        let imgSrc = data.data[i].images[0].url;
+                        let imgAlt = data.data[i].images[0].altText
+                        imgLocation.setAttribute('src', imgSrc)
+                        console.log(imgSrc);
 
                         localStorage.setItem('destination', JSON.stringify(endPos));
 
@@ -74,7 +84,7 @@ function getLocation(map, directionsRenderer, directionsService, clientLocation,
             console.log(endPos);
 
             localStorage.setItem('destination', JSON.stringify(endPos));
-
+            customSearchButton.click();
         })
     }
 
@@ -142,7 +152,6 @@ function calcRoute(map, directionsRenderer, directionsService, startPos, data) {
     console.log(endPos);
     console.log("calcRoute has ran");
     console.log(startPos);
-    console.log(mapBox);
     mapBox.style.display = 'flex';
     textDirPanel.style.display = "block";
 
@@ -175,6 +184,7 @@ function calcRoute(map, directionsRenderer, directionsService, startPos, data) {
             textDirPanel.style.display = "none";
 
             map.setCenter(start)
+            map.setZoom(10)
             directionsRenderer.setMap(null);
             directionsRenderer.setPanel(null);
 
