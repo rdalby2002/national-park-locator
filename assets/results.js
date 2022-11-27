@@ -6,19 +6,21 @@ var selectedStateAbbr = localStorage.getItem("stateAbbr");
 var selectedState = localStorage.getItem("state");
 const resultLocationHdr = document.getElementById("location-hdr");
 let textDirPanel = document.getElementById('text-directions');
-let latLongArr = [];
 let mapBox = document.getElementById('map-box-button')
+let clientLocation = '';
 
 
 
 //Map initialization
 const locationButton = document.createElement("button");
-init();
-window.init = initMap;
+// init();
+//window.init = mapController();
 
 
 
-function init() {
+function init(map, directionsRenderer, directionsService, clientLocation) {
+    console.log("init has ran");
+
 
     resultLocationHdr.append(selectedState);
 
@@ -34,11 +36,22 @@ function init() {
 
 
             for (let x in data.data) {
-                resultsListEl.append($("<li>" + data.data[x].fullName + "</li>"));
+                resultsListEl.append($("<li><button id=btn-" + x + ">" + data.data[x].fullName + " </button></li>"));
+                document.getElementById('btn-' + x).addEventListener('click', () => {
 
-                latLongArr.push(data.data[x].latitude + ',' + data.data[x].longitude);
+                    let lat = Number(data.data[x].latitude);
+                    let lng = Number(data.data[x].longitude);
+
+                    let endPos = { lat: lat, lng: lng };
+                    console.log(endPos);
+
+
+
+                    calcRoute(map, directionsRenderer, directionsService, clientLocation, endPos);
+            })
             }
-            console.log(latLongArr);
+
+            console.log(clientLocation)
 
         });
 
@@ -46,6 +59,7 @@ function init() {
 }
 
 function initMap() {
+    console.log("initMap has ran");
     const directionsRenderer = new google.maps.DirectionsRenderer();
     const directionsService = new google.maps.DirectionsService();
     const map = new google.maps.Map(document.getElementById('map'), {
@@ -56,10 +70,14 @@ function initMap() {
     mapController(map, directionsRenderer, directionsService);
 };
 
-function calcRoute(map, directionsRenderer, directionsService, pos) {
+function calcRoute(map, directionsRenderer, directionsService, startPos, endPos) {
+    console.log("calcRoute has ran");
+    console.log(startPos);
+    console.log(endPos);
+
     mapBox.style.display = "none";
-    var start = pos;
-    var end = { lat: 33.95370717, lng: -84.59214186 };
+    var start = startPos;
+    var end = endPos;
     var request = {
         origin: start,
         destination: end,
@@ -83,7 +101,7 @@ locationButton.classList.add("custom-map-control-button");
 mapBox.appendChild(locationButton)
 
 function mapController(map, directionsRenderer, directionsService) {
-
+    console.log("mapController");
     if (navigator.geolocation) {
         let p = navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -92,15 +110,17 @@ function mapController(map, directionsRenderer, directionsService) {
                     lng: position.coords.longitude,
                 }
 
-                console.log(pos);
+                console.log('client location - map controller' + JSON.stringify(pos));
                 map.setCenter(pos);
                 map.setZoom(18);
 
-                locationButton.addEventListener("click", calcRoute.bind(null, map, directionsRenderer, directionsService, pos), false);
-                console.log(pos);
-                
-            })    
-    }}
+                //locationButton.addEventListener("click", calcRoute.bind(null, map, directionsRenderer, directionsService, pos), false);
+                clientLocation = pos;
+
+                init(map, directionsRenderer, directionsService, clientLocation);
+            })
+    }
+}
 
 
 // Page initialization
