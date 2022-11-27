@@ -1,6 +1,6 @@
 header h1 {
     margin-top: 0%;
-    font-size: 35px;
+    font-size: 38px;
     padding: 20px 0px 10px 5px;
 }
 
@@ -14,6 +14,7 @@ main {
     display: flex;
     justify-content: center;
 }
+
 .content {
     padding: 10px 10px 30px 10px;
     margin: 30px;
@@ -43,13 +44,14 @@ button{
     background: none;
 	color: inherit;
 	border: none;
-	padding: 0;
+	padding: 5px 8px 5px 8px;
 	font: inherit;
 	cursor: pointer;
-	outline: inherit;}
+	outline: inherit;
+}
 
 .container h2 {
-    font-size: 28px;
+    font-size: 32px;
 }
 
 
@@ -89,12 +91,15 @@ button{
 }
 
 #results-list{
-    width: 40%;
+    width: 50%;
+    text-align: left;
+    display: inline-block;
+    gap: 3px;
 }
 
 #results-flex-box{
     display: flex;
-    justify-content: start;
+    justify-content: center;
 }
 
 #park-info-list{
@@ -112,3 +117,13 @@ button{
     height: 25vw;
     width: 25vw;
 }
+
+h3 {
+    font-size: 28px;
+}
+
+.park-btn {
+    text-align: start;
+    margin: 3px 0px 3px 0px;
+}
+
