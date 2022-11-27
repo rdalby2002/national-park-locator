@@ -8,6 +8,7 @@ const resultLocationHdr = document.getElementById("location-hdr");
 let textDirPanel = document.getElementById('text-directions');
 let mapBox = document.getElementById('map-box-button')
 let clientLocation = '';
+let startInputBox = document.getElementById('start-input-box');
 
 
 
@@ -37,26 +38,86 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
 
             for (let x in data.data) {
                 resultsListEl.append($("<li><button id=btn-" + x + ">" + data.data[x].fullName + " </button></li>"));
-                document.getElementById('btn-' + x).addEventListener('click', () => {
-
-                    let lat = Number(data.data[x].latitude);
-                    let lng = Number(data.data[x].longitude);
-
-                    let endPos = { lat: lat, lng: lng };
-                    console.log(endPos);
-
-
-
-                    calcRoute(map, directionsRenderer, directionsService, clientLocation, endPos);
-            })
+                
             }
 
+            if (clientLocation === null) {
+                let dataArr = data;
+                getLocation(map, directionsRenderer, directionsService, {}, dataArr)
+             } else {
+                for (let i = 0; i < data.data.length; i++) {
+
+                    document.getElementById('btn-' + i).addEventListener('click', () => {
+                        let lat = Number(data.data[i].latitude)
+                        let lng = Number(data.data[i].longitude);
+            
+                        let endPos = { lat: lat, lng: lng };
+                        console.log(endPos);
+            
+                        localStorage.setItem('destination', JSON.stringify(endPos));
+            
+                        calcRoute(map, directionsRenderer, directionsService, clientLocation);
+                })}
+
+
+             }
+            })
+
             console.log(clientLocation)
+        }
 
-        });
+// This is used if a client doesnt let the browser know their location. They can input their own.
+function getLocation(map, directionsRenderer, directionsService, clientLocation, data) {
+    let dataArr = data;
+    
+    for (let i = 0; i < dataArr.data.length; i++) {
 
+        document.getElementById('btn-' + i).addEventListener('click', () => {
+            let lat = Number(dataArr.data[i].latitude)
+            let lng = Number(dataArr.data[i].longitude);
 
-}
+            let endPos = { lat: lat, lng: lng };
+            console.log(endPos);
+
+            localStorage.setItem('destination', JSON.stringify(endPos));
+
+    })}
+    
+                let geocoder = new google.maps.Geocoder();
+
+                let inputEl = document.createElement("input");
+                let buttonEl = document.createElement("button");
+                inputEl.setAttribute('type', 'text')
+                inputEl.setAttribute('placeholder', 'Enter Start Location')
+                inputEl.id = 'start-input';
+                buttonEl.id = 'start-button-custom-search';
+                buttonEl.innerText = 'Search';
+                startInputBox.appendChild(inputEl);
+                startInputBox.appendChild(buttonEl);
+
+                let customSearchButton = document.getElementById('start-button-custom-search')
+                customSearchButton.addEventListener('click', () => {
+                    let customSearchDoc = document.getElementById('start-input');
+                    let customSearch = customSearchDoc.value;
+
+                if (customSearch === null) {
+                    console.log('No search params');
+                    return 
+                } else {
+                    let requestGeo = {address: customSearch}
+                    let geoRequestResults = geocoder.geocode(requestGeo).then( (results) => {
+                        let geoLat = results.results[0].geometry.location.lat();
+                        let geoLng = results.results[0].geometry.location.lng();
+                        
+                        let geoReturn = {lat: geoLat, lng: geoLng};
+                        console.log(results);
+                        console.log(results.results[0].geometry.location.lat());
+                        console.log(geoRequestResults);
+                        console.log(customSearch);
+                        calcRoute(map, directionsRenderer, directionsService, geoReturn);
+                    })
+
+}})}
 
 function initMap() {
     console.log("initMap has ran");
@@ -70,10 +131,11 @@ function initMap() {
     mapController(map, directionsRenderer, directionsService);
 };
 
-function calcRoute(map, directionsRenderer, directionsService, startPos, endPos) {
+function calcRoute(map, directionsRenderer, directionsService, startPos) {
+    let endPos = JSON.parse(localStorage.getItem('destination'));
+    console.log(endPos);
     console.log("calcRoute has ran");
     console.log(startPos);
-    console.log(endPos);
 
     mapBox.style.display = "none";
     var start = startPos;
@@ -96,14 +158,14 @@ function calcRoute(map, directionsRenderer, directionsService, startPos, endPos)
 
 }
 
-locationButton.textContent = "Pan to Current Location";
-locationButton.classList.add("custom-map-control-button");
-mapBox.appendChild(locationButton)
+// locationButton.textContent = "Pan to Current Location";
+// locationButton.classList.add("custom-map-control-button");
+// mapBox.appendChild(locationButton)
 
 function mapController(map, directionsRenderer, directionsService) {
     console.log("mapController");
     if (navigator.geolocation) {
-        let p = navigator.geolocation.getCurrentPosition(
+        navigator.geolocation.getCurrentPosition(
             (position) => {
                 const pos = {
                     lat: position.coords.latitude,
@@ -114,13 +176,71 @@ function mapController(map, directionsRenderer, directionsService) {
                 map.setCenter(pos);
                 map.setZoom(18);
 
-                //locationButton.addEventListener("click", calcRoute.bind(null, map, directionsRenderer, directionsService, pos), false);
                 clientLocation = pos;
 
                 init(map, directionsRenderer, directionsService, clientLocation);
-            })
-    }
-}
+            },
+            () => {
+                //handleLocationError(map, directionsRenderer, directionsService);
+                clientLocation = null;
+                init(map, directionsRenderer, directionsService, clientLocation)
+
+              }
+            
+            )
+    }}
+    // } else {
+        // console.log('No geolocation support');
+
+        // let inputEl = document.createElement("input");
+        // //let buttonEl = document.createElement("button");
+        // inputEl.setAttribute('type', 'text')
+        // inputEl.setAttribute('placeholder', 'Enter Start Location')
+        // inputEl.id = 'start-input';
+        // startInputBox.appendChild(inputEl);
 
 
-// Page initialization
+        // init(map, directionsRenderer, directionsService, clientLocation);
+//     }
+// };
+
+// function handleLocationError(map, directionsRenderer, directionsService) {
+
+// console.log('No geolocation allowed or supported');
+
+// let geocoder = new google.maps.Geocoder();
+
+// let inputEl = document.createElement("input");
+// let buttonEl = document.createElement("button");
+// inputEl.setAttribute('type', 'text')
+// inputEl.setAttribute('placeholder', 'Enter Start Location')
+// inputEl.id = 'start-input';
+// buttonEl.id = 'start-button-custom-search';
+// buttonEl.innerText = 'Search';
+// startInputBox.appendChild(inputEl);
+// startInputBox.appendChild(buttonEl);
+
+// let customSearchButton = document.getElementById('start-button-custom-search')
+// customSearchButton.addEventListener('click', () => {
+//     let customSearchDoc = document.getElementById('start-input');
+//     let customSearch = customSearchDoc.value;
+
+//     if (customSearch === null) {
+//         console.log('No search params');
+//         return 
+//     } else {
+//         let requestGeo = {address: customSearch}
+//         let geoRequestResults = geocoder.geocode(requestGeo).then( (results) => {
+//             let geoLat = results.results[0].geometry.location.lat();
+//             let geoLng = results.results[0].geometry.location.lng();
+            
+//             let geoReturn = {lat: geoLat, lng: geoLng};
+//             console.log(results);
+//             console.log(results.results[0].geometry.location.lat());
+//             console.log(geoRequestResults);
+//             console.log(customSearch);
+//             init(map, directionsRenderer, directionsService, geoReturn);
+//         })
+//     }
+// })
+// };
