@@ -50,7 +50,7 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
 
                         let parkInfoList = document.getElementById('park-info-list');
                         parkInfoList.style.display = "flex";
- 
+
                         //Retreives img src for each park
                         let imgLocation = document.getElementById('park-info-img')
                         let imgSrc = data.data[i].images[0].url;
@@ -68,8 +68,27 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
                         let parkDescription = data.data[i].description
                         parkInfoDesc.innerText = parkDescription;
 
+                        //Retrieves and sets the park activities
+                        let parkInfoActivities = document.getElementById('park-info-activities')
+                        let activitiesArray = [];
+                        let parkActivitiesTitle = document.getElementById('park-activites-title')
 
+
+                        if (data.data[i].activities[0] === undefined) {
+                            parkInfoActivities.innerText = '';
+                            parkActivitiesTitle.style.display = 'none';
+                            return
+                        } else {
+                            for (let x = 0; x < data.data[i].activities.length; x++) {
+                                let parkActivities = data.data[i].activities[x].name
+                                activitiesArray.push(" " + parkActivities);
+                            }
+                            parkInfoActivities.innerText = activitiesArray;
+                            parkActivitiesTitle.style.display = 'block';
+                        }
                         
+
+
 
                         localStorage.setItem('destination', JSON.stringify(endPos));
 
@@ -205,7 +224,7 @@ function calcRoute(map, directionsRenderer, directionsService, startPos, data) {
             setTimeout(() => {
                 noDirections.style.display = 'none';
             }, 2000)
-            
+
         }
         console.log(result);
     });
