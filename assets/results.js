@@ -77,7 +77,6 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
                         if (data.data[i].activities[0] === undefined) {
                             parkInfoActivities.innerText = '';
                             parkActivitiesTitle.style.display = 'none';
-                            return
                         } else {
                             for (let x = 0; x < data.data[i].activities.length; x++) {
                                 let parkActivities = data.data[i].activities[x].name
@@ -86,9 +85,21 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
                             parkInfoActivities.innerText = activitiesArray;
                             parkActivitiesTitle.style.display = 'block';
                         }
+
+                        // Handles writing park url to page
+                        let parkInfoUrlTitle = document.getElementById('park-info-url-title');
+                        let parkInfoUrl = document.getElementById('park-info-url');
+                        let parkUrl = data.data[i].url;
                         
-
-
+                        if (parkUrl) {
+                            parkInfoUrl.style.display = "list-item";
+                            parkInfoUrlTitle.style.display = "list-item";
+                            parkInfoUrl.innerText = parkUrl;
+                        } else {
+                            parkInfoUrl.innerText = "";
+                            parkInfoUrl.style.display = "none";
+                            parkInfoUrlTitle.style.display = "none";
+                        }
 
                         localStorage.setItem('destination', JSON.stringify(endPos));
 
