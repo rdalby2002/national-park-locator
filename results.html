@@ -3,12 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, intitial-scale=1.0">
+    <meta name="viewport" content="width=device-width, intitial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie-edge">
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,400i,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <title>National Park Locator</title>
 </head>
+
 <body>
     <header>
         <h1>National Park Locator</h1>
@@ -16,17 +19,40 @@
 
     <div class="hero">
         <!-- Append state name to <h2> with JS. -->
-        <h2>Locations of National Parks in </h2>
-        <!-- Append Google map to below div with JS. -->
-        <div class="map-container"></div>
+        <h2 id="location-hdr">Locations of National Parks in </h2>
+
     </div>
     <div class="results">
-        <h2>Park details:</h2>
         <!-- Append park info results to below div with JS. -->
         <div id="results-container">
-            <ul id="results-list"></ul>
+            <div id="start-input-box">
+            </div>
+            <h3>Please Select a Park</h3>
+            <div id="results-flex-box">
+                <ul id="results-list"></ul>
+                <ul id="park-info-list">
+                    <li><img src="" alt="" id="park-info-img"></li>
+                    <li><h3 id="park-info-title"></h3></li>
+                    <li id="park-info-description"></li>
+                    <li id="park-activites-title"><h4 >Park activities include:</h4></li>
+                    <li id="park-info-activities"></li>
+                    <li></li>
+                </ul>                
+            </div>
         </div>
     </div>
+
+    <h3 id="no-directions-aval">No Directions Available</h3>
+    <div class="center-box" id="map-center-box">
+        <div id="map"></div>
+        <div id="text-directions"></div>
+    </div>
+
+
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNoCGvv588RGUOYyIPoRXZlS1SezWenwk&callback=initMap&v=weekly"
+        async defer>
+        </script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="./assets/results.js"></script>
 </body>
