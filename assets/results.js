@@ -50,12 +50,26 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
 
                         let parkInfoList = document.getElementById('park-info-list');
                         parkInfoList.style.display = "flex";
-
+ 
+                        //Retreives img src for each park
                         let imgLocation = document.getElementById('park-info-img')
                         let imgSrc = data.data[i].images[0].url;
                         let imgAlt = data.data[i].images[0].altText
-                        imgLocation.setAttribute('src', imgSrc)
-                        console.log(imgSrc);
+                        imgLocation.setAttribute('alt', imgAlt);
+                        imgLocation.setAttribute('src', imgSrc);
+
+                        //Retrieves and sets the park title
+                        let parkInfoTitle = document.getElementById('park-info-title');
+                        let parkTitle = data.data[i].fullName;
+                        parkInfoTitle.innerText = parkTitle;
+
+                        //Retrieves and sets the park descirption
+                        let parkInfoDesc = document.getElementById('park-info-description');
+                        let parkDescription = data.data[i].description
+                        parkInfoDesc.innerText = parkDescription;
+
+
+                        
 
                         localStorage.setItem('destination', JSON.stringify(endPos));
 
