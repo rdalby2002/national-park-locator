@@ -303,6 +303,7 @@ function calcRoute(map, directionsRenderer, directionsService, startPos, data) {
 }
 
 
+
 function mapController(map, directionsRenderer, directionsService) {
     console.log("mapController");
     if (selectedState === 'Select a US state.') {
