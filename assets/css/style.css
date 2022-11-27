@@ -39,3 +39,15 @@ button{
     margin: 0px;
     padding: 0px;
 }
+
+#start-button-custom-search{
+    background-color: blanchedalmond;
+    border: 2px black solid;
+    margin: 0 2vw;
+}
+
+#no-directions-aval{
+    display: none;
+    width: 100%;
+    text-align: center;
+}

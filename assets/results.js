@@ -12,12 +12,6 @@ let startInputBox = document.getElementById('start-input-box');
 
 
 
-//Map initialization
-const locationButton = document.createElement("button");
-// init();
-//window.init = mapController();
-
-
 
 function init(map, directionsRenderer, directionsService, clientLocation) {
     console.log("init has ran");
@@ -38,38 +32,39 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
 
             for (let x in data.data) {
                 resultsListEl.append($("<li><button id=btn-" + x + ">" + data.data[x].fullName + " </button></li>"));
-                
+
             }
 
             if (clientLocation === null) {
                 let dataArr = data;
                 getLocation(map, directionsRenderer, directionsService, {}, dataArr)
-             } else {
+            } else {
                 for (let i = 0; i < data.data.length; i++) {
 
                     document.getElementById('btn-' + i).addEventListener('click', () => {
                         let lat = Number(data.data[i].latitude)
                         let lng = Number(data.data[i].longitude);
-            
+
                         let endPos = { lat: lat, lng: lng };
                         console.log(endPos);
-            
+
                         localStorage.setItem('destination', JSON.stringify(endPos));
-            
-                        calcRoute(map, directionsRenderer, directionsService, clientLocation);
-                })}
+
+                        calcRoute(map, directionsRenderer, directionsService, clientLocation, data);
+                    })
+                }
 
 
-             }
-            })
+            }
+        })
 
-            console.log(clientLocation)
-        }
+    console.log(clientLocation)
+}
 
 // This is used if a client doesnt let the browser know their location. They can input their own.
 function getLocation(map, directionsRenderer, directionsService, clientLocation, data) {
     let dataArr = data;
-    
+
     for (let i = 0; i < dataArr.data.length; i++) {
 
         document.getElementById('btn-' + i).addEventListener('click', () => {
@@ -81,43 +76,53 @@ function getLocation(map, directionsRenderer, directionsService, clientLocation,
 
             localStorage.setItem('destination', JSON.stringify(endPos));
 
-    })}
-    
-                let geocoder = new google.maps.Geocoder();
+        })
+    }
 
-                let inputEl = document.createElement("input");
-                let buttonEl = document.createElement("button");
-                inputEl.setAttribute('type', 'text')
-                inputEl.setAttribute('placeholder', 'Enter Start Location')
-                inputEl.id = 'start-input';
-                buttonEl.id = 'start-button-custom-search';
-                buttonEl.innerText = 'Search';
-                startInputBox.appendChild(inputEl);
-                startInputBox.appendChild(buttonEl);
+    let geocoder = new google.maps.Geocoder();
 
-                let customSearchButton = document.getElementById('start-button-custom-search')
-                customSearchButton.addEventListener('click', () => {
-                    let customSearchDoc = document.getElementById('start-input');
-                    let customSearch = customSearchDoc.value;
+    let inputEl = document.createElement("input");
+    let buttonEl = document.createElement("button");
+    inputEl.setAttribute('type', 'text')
+    inputEl.setAttribute('placeholder', 'Enter Start Location')
+    inputEl.id = 'start-input';
+    buttonEl.id = 'start-button-custom-search';
+    buttonEl.innerText = 'Search';
+    startInputBox.appendChild(inputEl);
+    startInputBox.appendChild(buttonEl);
 
-                if (customSearch === null) {
-                    console.log('No search params');
-                    return 
-                } else {
-                    let requestGeo = {address: customSearch}
-                    let geoRequestResults = geocoder.geocode(requestGeo).then( (results) => {
-                        let geoLat = results.results[0].geometry.location.lat();
-                        let geoLng = results.results[0].geometry.location.lng();
-                        
-                        let geoReturn = {lat: geoLat, lng: geoLng};
-                        console.log(results);
-                        console.log(results.results[0].geometry.location.lat());
-                        console.log(geoRequestResults);
-                        console.log(customSearch);
-                        calcRoute(map, directionsRenderer, directionsService, geoReturn);
-                    })
+    let customSearchInput = document.getElementById('start-input')
+    customSearchInput.addEventListener('keypress', function (e) {
+        if (e.keyCode == 13) {
+            customSearchButton.click();
+        }
+    });
 
-}})}
+    let customSearchButton = document.getElementById('start-button-custom-search')
+    customSearchButton.addEventListener('click', () => {
+        let customSearchDoc = document.getElementById('start-input');
+        let customSearch = customSearchDoc.value;
+
+        if (customSearch === null) {
+            console.log('No search params');
+            return
+        } else {
+            let requestGeo = { address: customSearch }
+            let geoRequestResults = geocoder.geocode(requestGeo).then((results) => {
+                let geoLat = results.results[0].geometry.location.lat();
+                let geoLng = results.results[0].geometry.location.lng();
+
+                let geoReturn = { lat: geoLat, lng: geoLng };
+                console.log(results);
+                console.log(results.results[0].geometry.location.lat());
+                console.log(geoRequestResults);
+                console.log(customSearch);
+                calcRoute(map, directionsRenderer, directionsService, geoReturn, dataArr);
+            })
+
+        }
+    })
+}
 
 function initMap() {
     console.log("initMap has ran");
@@ -131,13 +136,23 @@ function initMap() {
     mapController(map, directionsRenderer, directionsService);
 };
 
-function calcRoute(map, directionsRenderer, directionsService, startPos) {
+function calcRoute(map, directionsRenderer, directionsService, startPos, data) {
     let endPos = JSON.parse(localStorage.getItem('destination'));
     console.log(endPos);
     console.log("calcRoute has ran");
     console.log(startPos);
 
-    mapBox.style.display = "none";
+    if (endPos === null) {
+        if (data.data.length >= 1) {
+
+            let lat = Number(data.data[0].latitude)
+            let lng = Number(data.data[0].longitude);
+
+            endPos = { lat: lat, lng: lng };
+            localStorage.setItem('destination', JSON.stringify(endPos));
+        }
+    }
+
     var start = startPos;
     var end = endPos;
     var request = {
@@ -150,6 +165,13 @@ function calcRoute(map, directionsRenderer, directionsService, startPos) {
             directionsRenderer.setMap(map)
             directionsRenderer.setDirections(result);
             directionsRenderer.setPanel(textDirPanel);
+        } if (status == 'ZERO_RESULTS') {
+            let noDirections = document.getElementById('no-directions-aval');
+            noDirections.style.display = 'block';
+            setTimeout(() => {
+                noDirections.style.display = 'none';
+            }, 2000)
+            
         }
         console.log(result);
     });
@@ -158,9 +180,6 @@ function calcRoute(map, directionsRenderer, directionsService, startPos) {
 
 }
 
-// locationButton.textContent = "Pan to Current Location";
-// locationButton.classList.add("custom-map-control-button");
-// mapBox.appendChild(locationButton)
 
 function mapController(map, directionsRenderer, directionsService) {
     console.log("mapController");
@@ -185,62 +204,8 @@ function mapController(map, directionsRenderer, directionsService) {
                 clientLocation = null;
                 init(map, directionsRenderer, directionsService, clientLocation)
 
-              }
-            
-            )
-    }}
-    // } else {
-        // console.log('No geolocation support');
+            }
 
-        // let inputEl = document.createElement("input");
-        // //let buttonEl = document.createElement("button");
-        // inputEl.setAttribute('type', 'text')
-        // inputEl.setAttribute('placeholder', 'Enter Start Location')
-        // inputEl.id = 'start-input';
-        // startInputBox.appendChild(inputEl);
-
-
-        // init(map, directionsRenderer, directionsService, clientLocation);
-//     }
-// };
-
-// function handleLocationError(map, directionsRenderer, directionsService) {
-
-// console.log('No geolocation allowed or supported');
-
-// let geocoder = new google.maps.Geocoder();
-
-// let inputEl = document.createElement("input");
-// let buttonEl = document.createElement("button");
-// inputEl.setAttribute('type', 'text')
-// inputEl.setAttribute('placeholder', 'Enter Start Location')
-// inputEl.id = 'start-input';
-// buttonEl.id = 'start-button-custom-search';
-// buttonEl.innerText = 'Search';
-// startInputBox.appendChild(inputEl);
-// startInputBox.appendChild(buttonEl);
-
-// let customSearchButton = document.getElementById('start-button-custom-search')
-// customSearchButton.addEventListener('click', () => {
-//     let customSearchDoc = document.getElementById('start-input');
-//     let customSearch = customSearchDoc.value;
-
-//     if (customSearch === null) {
-//         console.log('No search params');
-//         return 
-//     } else {
-//         let requestGeo = {address: customSearch}
-//         let geoRequestResults = geocoder.geocode(requestGeo).then( (results) => {
-//             let geoLat = results.results[0].geometry.location.lat();
-//             let geoLng = results.results[0].geometry.location.lng();
-            
-//             let geoReturn = {lat: geoLat, lng: geoLng};
-//             console.log(results);
-//             console.log(results.results[0].geometry.location.lat());
-//             console.log(geoRequestResults);
-//             console.log(customSearch);
-//             init(map, directionsRenderer, directionsService, geoReturn);
-//         })
-//     }
-// })
-// };
+        )
+    }
+}
