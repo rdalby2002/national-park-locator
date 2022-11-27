@@ -14,6 +14,8 @@ let startInputBox = document.getElementById('start-input-box');
 
 
 function init(map, directionsRenderer, directionsService, clientLocation) {
+
+    console.log(window.location.pathname)
     console.log("init has ran");
 
 
@@ -77,7 +79,6 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
                         if (data.data[i].activities[0] === undefined) {
                             parkInfoActivities.innerText = '';
                             parkActivitiesTitle.style.display = 'none';
-                            return
                         } else {
                             for (let x = 0; x < data.data[i].activities.length; x++) {
                                 let parkActivities = data.data[i].activities[x].name
@@ -86,9 +87,22 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
                             parkInfoActivities.innerText = activitiesArray;
                             parkActivitiesTitle.style.display = 'block';
                         }
-                        
 
+                        // Handles writing park url to page
+                        let parkInfoUrlTitle = document.getElementById('park-info-url-title');
+                        let parkInfoUrl = document.getElementById('park-info-url');
+                        let parkUrl = data.data[i].url;
 
+                        if (parkUrl) {
+                            parkInfoUrl.style.display = "list-item";
+                            parkInfoUrlTitle.style.display = "list-item";
+                            parkInfoUrl.setAttribute('href', parkUrl);
+                            parkInfoUrl.innerText = parkUrl;
+                        } else {
+                            parkInfoUrl.innerText = "";
+                            parkInfoUrl.style.display = "none";
+                            parkInfoUrlTitle.style.display = "none";
+                        }
 
                         localStorage.setItem('destination', JSON.stringify(endPos));
 
@@ -115,6 +129,60 @@ function getLocation(map, directionsRenderer, directionsService, clientLocation,
 
             let endPos = { lat: lat, lng: lng };
             console.log(endPos);
+
+            let parkInfoList = document.getElementById('park-info-list');
+            parkInfoList.style.display = "flex";
+
+            //Retreives img src for each park
+            let imgLocation = document.getElementById('park-info-img')
+            let imgSrc = data.data[i].images[0].url;
+            let imgAlt = data.data[i].images[0].altText
+            imgLocation.setAttribute('alt', imgAlt);
+            imgLocation.setAttribute('src', imgSrc);
+
+            //Retrieves and sets the park title
+            let parkInfoTitle = document.getElementById('park-info-title');
+            let parkTitle = data.data[i].fullName;
+            parkInfoTitle.innerText = parkTitle;
+
+            //Retrieves and sets the park descirption
+            let parkInfoDesc = document.getElementById('park-info-description');
+            let parkDescription = data.data[i].description
+            parkInfoDesc.innerText = parkDescription;
+
+            //Retrieves and sets the park activities
+            let parkInfoActivities = document.getElementById('park-info-activities')
+            let activitiesArray = [];
+            let parkActivitiesTitle = document.getElementById('park-activites-title')
+
+
+            if (data.data[i].activities[0] === undefined) {
+                parkInfoActivities.innerText = '';
+                parkActivitiesTitle.style.display = 'none';
+            } else {
+                for (let x = 0; x < data.data[i].activities.length; x++) {
+                    let parkActivities = data.data[i].activities[x].name
+                    activitiesArray.push(" " + parkActivities);
+                }
+                parkInfoActivities.innerText = activitiesArray;
+                parkActivitiesTitle.style.display = 'block';
+            }
+
+            // Handles writing park url to page
+            let parkInfoUrlTitle = document.getElementById('park-info-url-title');
+            let parkInfoUrl = document.getElementById('park-info-url');
+            let parkUrl = data.data[i].url;
+
+            if (parkUrl) {
+                parkInfoUrl.style.display = "list-item";
+                parkInfoUrlTitle.style.display = "list-item";
+                parkInfoUrl.setAttribute('href', parkUrl);
+                parkInfoUrl.innerText = parkUrl;
+            } else {
+                parkInfoUrl.innerText = "";
+                parkInfoUrl.style.display = "none";
+                parkInfoUrlTitle.style.display = "none";
+            }
 
             localStorage.setItem('destination', JSON.stringify(endPos));
             customSearchButton.click();
@@ -235,31 +303,36 @@ function calcRoute(map, directionsRenderer, directionsService, startPos, data) {
 }
 
 
+
 function mapController(map, directionsRenderer, directionsService) {
     console.log("mapController");
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const pos = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
+    if (selectedState === 'Select a US state.') {
+       window.location.href = '../national-park-locator/index.html';
+    } else {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    }
+
+                    console.log('client location - map controller' + JSON.stringify(pos));
+                    map.setCenter(pos);
+                    map.setZoom(18);
+
+                    clientLocation = pos;
+
+                    init(map, directionsRenderer, directionsService, clientLocation);
+                },
+                () => {
+                    //handleLocationError(map, directionsRenderer, directionsService);
+                    clientLocation = null;
+                    init(map, directionsRenderer, directionsService, clientLocation)
+
                 }
 
-                console.log('client location - map controller' + JSON.stringify(pos));
-                map.setCenter(pos);
-                map.setZoom(18);
-
-                clientLocation = pos;
-
-                init(map, directionsRenderer, directionsService, clientLocation);
-            },
-            () => {
-                //handleLocationError(map, directionsRenderer, directionsService);
-                clientLocation = null;
-                init(map, directionsRenderer, directionsService, clientLocation)
-
-            }
-
-        )
+            )
+        }
     }
 }
