@@ -39,3 +39,76 @@ main {
     height: 600px;
     align-items: center;
 }
+button{
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;}
+
+.container h2 {
+    font-size: 28px;
+}
+
+
+.center-box{
+    display: none;
+    justify-content: center;
+    width: 90vw;
+    height: 50vh;
+    margin: auto;
+    padding: 1em;
+
+}
+#map{
+    width: 80%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#text-directions {
+    overflow: scroll;
+    width: 20%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#start-button-custom-search{
+    background-color: blanchedalmond;
+    border: 2px black solid;
+    margin: 0 2vw;
+}
+
+#no-directions-aval{
+    display: none;
+    width: 100%;
+    text-align: center;
+}
+
+#results-list{
+    width: 40%;
+}
+
+#results-flex-box{
+    display: flex;
+    justify-content: start;
+}
+
+#park-info-list{
+    display: none;
+    padding: 0;
+    margin-left: 3vw;
+    flex-direction: column;
+    list-style: none;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+#park-info-img{
+    height: 25vw;
+    width: 25vw;
+}
