@@ -19,12 +19,13 @@ button{
 
 
 .center-box{
-    display: flex;
+    display: none;
     justify-content: center;
     width: 90vw;
     height: 50vh;
     margin: auto;
     padding: 1em;
+
 }
 #map{
     width: 80%;

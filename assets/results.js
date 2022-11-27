@@ -6,7 +6,6 @@ var selectedStateAbbr = localStorage.getItem("stateAbbr");
 var selectedState = localStorage.getItem("state");
 const resultLocationHdr = document.getElementById("location-hdr");
 let textDirPanel = document.getElementById('text-directions');
-let mapBox = document.getElementById('map-box-button')
 let clientLocation = '';
 let startInputBox = document.getElementById('start-input-box');
 
@@ -138,9 +137,14 @@ function initMap() {
 
 function calcRoute(map, directionsRenderer, directionsService, startPos, data) {
     let endPos = JSON.parse(localStorage.getItem('destination'));
+    let mapBox = document.getElementById('map-center-box');
+
     console.log(endPos);
     console.log("calcRoute has ran");
     console.log(startPos);
+    console.log(mapBox);
+    mapBox.style.display = 'flex';
+    textDirPanel.style.display = "block";
 
     if (endPos === null) {
         if (data.data.length >= 1) {
@@ -168,6 +172,12 @@ function calcRoute(map, directionsRenderer, directionsService, startPos, data) {
         } if (status == 'ZERO_RESULTS') {
             let noDirections = document.getElementById('no-directions-aval');
             noDirections.style.display = 'block';
+            textDirPanel.style.display = "none";
+
+            map.setCenter(start)
+            directionsRenderer.setMap(null);
+            directionsRenderer.setPanel(null);
+
             setTimeout(() => {
                 noDirections.style.display = 'none';
             }, 2000)
