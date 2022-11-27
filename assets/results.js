@@ -14,6 +14,8 @@ let startInputBox = document.getElementById('start-input-box');
 
 
 function init(map, directionsRenderer, directionsService, clientLocation) {
+
+    console.log(window.location.pathname)
     console.log("init has ran");
 
 
@@ -300,29 +302,33 @@ function calcRoute(map, directionsRenderer, directionsService, startPos, data) {
 
 function mapController(map, directionsRenderer, directionsService) {
     console.log("mapController");
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const pos = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
+    if (selectedState === 'Select a US state.') {
+       window.location.href = '../national-park-locator/index.html';
+    } else {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                    }
+
+                    console.log('client location - map controller' + JSON.stringify(pos));
+                    map.setCenter(pos);
+                    map.setZoom(18);
+
+                    clientLocation = pos;
+
+                    init(map, directionsRenderer, directionsService, clientLocation);
+                },
+                () => {
+                    //handleLocationError(map, directionsRenderer, directionsService);
+                    clientLocation = null;
+                    init(map, directionsRenderer, directionsService, clientLocation)
+
                 }
 
-                console.log('client location - map controller' + JSON.stringify(pos));
-                map.setCenter(pos);
-                map.setZoom(18);
-
-                clientLocation = pos;
-
-                init(map, directionsRenderer, directionsService, clientLocation);
-            },
-            () => {
-                //handleLocationError(map, directionsRenderer, directionsService);
-                clientLocation = null;
-                init(map, directionsRenderer, directionsService, clientLocation)
-
-            }
-
-        )
+            )
+        }
     }
 }
