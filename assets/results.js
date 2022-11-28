@@ -97,6 +97,7 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
                             parkInfoUrl.style.display = "list-item";
                             parkInfoUrlTitle.style.display = "list-item";
                             parkInfoUrl.setAttribute('href', parkUrl);
+                            parkInfoUrl.classList.add('deep-orange-text', 'text-darken-2')
                             parkInfoUrl.innerText = parkUrl;
                         } else {
                             parkInfoUrl.innerText = "";
@@ -177,6 +178,7 @@ function getLocation(map, directionsRenderer, directionsService, clientLocation,
                 parkInfoUrl.style.display = "list-item";
                 parkInfoUrlTitle.style.display = "list-item";
                 parkInfoUrl.setAttribute('href', parkUrl);
+                parkInfoUrl.classList.add('deep-orange-text', 'text-darken-2')
                 parkInfoUrl.innerText = parkUrl;
             } else {
                 parkInfoUrl.innerText = "";
