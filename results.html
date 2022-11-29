@@ -17,14 +17,27 @@
     <header class="deep-orange darken-2">
         <h1 class="orange-text text-lighten-5">National Park Locator 🌄</h1>
     </header>
-
-
-    <div class="hero container">
+    <div id="loadbox">
+        <div id="loader" class="preloader-wrapper active">
+            <div class="spinner-layer spinner-red-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="show-all container" id="hero">
         <!-- Append state name to <h2> with JS. -->
         <h2 class="deep-orange-text text-darken-2" id="location-hdr">Locations of National Parks in </h2>
 
     </div>
-    <div class="results container">
+    <div class="show-all container" id="results">
         <!-- Append park info results to below div with JS. -->
         <div id="results-container">
             <div id="start-input-box">
@@ -66,5 +79,5 @@
         </script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="./assets/js/materialize.min.js"></script>
-    <script src="./assets/results.js"></script>
+    <script src="./assets/js/results.js"></script>
 </body>
