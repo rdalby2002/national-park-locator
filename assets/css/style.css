@@ -135,6 +135,21 @@ h4 {
     display: flex;
 }
 
+#loadbox {
+    display: flex;
+    align-items: center;
+    height: 70vh;
+}
+
+#loader {
+    justify-content: center;
+    margin: auto;
+}
+
+.show-all {
+    display: none;
+}
+
 #hdr-box {
     display: flex;
     justify-content: space-around;

@@ -11,11 +11,18 @@ let startInputBox = document.getElementById('start-input-box');
 let backToSelectAState = document.getElementById('select-a-state-rtn-btn');
 
 
+function hideLoading() {
+    document.getElementById('loadbox').style.display = "none";
+}
 //Returns to select a state page
 backToSelectAState.addEventListener('click', () => {
     window.location.href = '../national-park-locator/index.html';
 });
 
+function showAll() {
+    document.getElementById('hero').style.display = "block";
+    document.getElementById('results').style.display = "block";
+}
 
 
 function init(map, directionsRenderer, directionsService, clientLocation) {
@@ -31,6 +38,9 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
             return response.json();
         })
         .then(function (data) {
+            hideLoading();
+            showAll();
+
             console.log(data);
             console.log("Name: " + data.data[0].fullName);
             console.log("Latitude: " + data.data[0].latitude);
