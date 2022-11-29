@@ -309,7 +309,7 @@ function calcRoute(map, directionsRenderer, directionsService, startPos, data) {
 function mapController(map, directionsRenderer, directionsService) {
     console.log("mapController");
     if (selectedState === 'Select a US state.') {
-       window.location.href = '../national-park-locator/index.html';
+        window.location.href = '../national-park-locator/index.html';
     } else {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
