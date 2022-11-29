@@ -137,6 +137,8 @@ h4 {
 
 #loadbox {
     display: flex;
+    align-items: center;
+    height: 70vh;
 }
 
 #loader {
@@ -148,4 +150,12 @@ h4 {
     display: none;
 }
 
+#hdr-box {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
 
+#select-a-state-rtn-btn {
+    border: 2px solid black;
+}
