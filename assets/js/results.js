@@ -48,7 +48,7 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
 
 
             for (let x in data.data) {
-                resultsListEl.append($("<li class='park-btn orange-text deep-orange darken-2 text-lighten-5 center-align'><button id=btn-" + x + ">" + data.data[x].fullName + " </button></li>"));
+                resultsListEl.append($("<li class='park-btn orange-text deep-orange darken-2 text-lighten-5 center-align'><button class='park-btn-btn' id=btn-" + x + ">" + data.data[x].fullName + " </button></li>"));
 
             }
 
