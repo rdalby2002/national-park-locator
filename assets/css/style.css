@@ -134,3 +134,18 @@ h4 {
 .center-box-box {
     display: flex;
 }
+
+#loadbox {
+    display: flex;
+}
+
+#loader {
+    justify-content: center;
+    margin: auto;
+}
+
+.show-all {
+    display: none;
+}
+
+

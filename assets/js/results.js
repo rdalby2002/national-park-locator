@@ -10,7 +10,14 @@ let clientLocation = '';
 let startInputBox = document.getElementById('start-input-box');
 
 
+function hideLoading() {
+    document.getElementById('loader').style.display = "none";
+}
 
+function showAll() {
+    document.getElementById('hero').style.display = "block";
+    document.getElementById('results').style.display = "block";
+}
 
 
 function init(map, directionsRenderer, directionsService, clientLocation) {
@@ -26,6 +33,9 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
             return response.json();
         })
         .then(function (data) {
+            hideLoading();
+            showAll();
+
             console.log(data);
             console.log("Name: " + data.data[0].fullName);
             console.log("Latitude: " + data.data[0].latitude);
