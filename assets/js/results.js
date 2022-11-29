@@ -27,6 +27,10 @@ function showAll() {
 
 function init(map, directionsRenderer, directionsService, clientLocation) {
 
+    if (selectedState === 'Select a US state.') {
+        window.location.href = '../national-park-locator/index.html';
+    }
+
     console.log(window.location.pathname)
     console.log("init has ran");
 
