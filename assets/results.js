@@ -8,8 +8,13 @@ const resultLocationHdr = document.getElementById("location-hdr");
 let textDirPanel = document.getElementById('text-directions');
 let clientLocation = '';
 let startInputBox = document.getElementById('start-input-box');
+let backToSelectAState = document.getElementById('select-a-state-rtn-btn');
 
 
+//Returns to select a state page
+backToSelectAState.addEventListener('click', () => {
+    window.location.href = '../national-park-locator/index.html';
+});
 
 
 
