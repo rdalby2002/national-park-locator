@@ -18,6 +18,7 @@
         <h1 class="orange-text text-lighten-5">National Park Locator 🌄</h1>
     </header>
 
+
     <div class="hero container">
         <!-- Append state name to <h2> with JS. -->
         <h2 class="deep-orange-text text-darken-2" id="location-hdr">Locations of National Parks in </h2>
@@ -28,27 +29,35 @@
         <div id="results-container">
             <div id="start-input-box">
             </div>
+            <h3 id="no-directions-aval">No Directions Available</h3>
+            <div class="center-box-box">
+                <div class="center-box" id="map-center-box">
+                    <div id="map"></div>
+                    <div id="text-directions"></div>
+                </div>
+            </div>
             <h3 class="deep-orange-text text-darken-2 center-align">Please Select a Park</h3>
             <div id="results-flex-box">
                 <ul id="results-list"></ul>
                 <ul id="park-info-list">
                     <li><img src="" alt="" id="park-info-img"></li>
-                    <li><h3 id="park-info-title"></h3></li>
+                    <li>
+                        <h3 id="park-info-title"></h3>
+                    </li>
                     <li id="park-info-description"></li>
-                    <li id="park-activites-title"><h4 >Park activities include:</h4></li>
+                    <li id="park-activites-title">
+                        <h4>Park activities include:</h4>
+                    </li>
                     <li id="park-info-activities"></li>
-                    <li id="park-info-url-title"><h4>For hours, pricing and other park information visit:</h4></li>
+                    <li id="park-info-url-title">
+                        <h4>For hours, pricing and other park information visit:</h4>
+                    </li>
                     <li><a href="" id="park-info-url"></a></li>
-                </ul>                
+                </ul>
             </div>
         </div>
     </div>
 
-    <h3 id="no-directions-aval">No Directions Available</h3>
-    <div class="center-box" id="map-center-box">
-        <div id="map"></div>
-        <div id="text-directions"></div>
-    </div>
 
 
     <script

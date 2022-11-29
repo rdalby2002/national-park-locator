@@ -130,3 +130,7 @@ h3 {
 h4 {
     font-size: 24px;
 }
+
+.center-box-box {
+    display: flex;
+}
