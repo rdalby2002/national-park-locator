@@ -97,6 +97,7 @@ function init(map, directionsRenderer, directionsService, clientLocation) {
                             parkInfoUrl.style.display = "list-item";
                             parkInfoUrlTitle.style.display = "list-item";
                             parkInfoUrl.setAttribute('href', parkUrl);
+                            parkInfoUrl.classList.add('deep-orange-text', 'text-darken-2')
                             parkInfoUrl.innerText = parkUrl;
                         } else {
                             parkInfoUrl.innerText = "";
@@ -177,6 +178,7 @@ function getLocation(map, directionsRenderer, directionsService, clientLocation,
                 parkInfoUrl.style.display = "list-item";
                 parkInfoUrlTitle.style.display = "list-item";
                 parkInfoUrl.setAttribute('href', parkUrl);
+                parkInfoUrl.classList.add('deep-orange-text', 'text-darken-2')
                 parkInfoUrl.innerText = parkUrl;
             } else {
                 parkInfoUrl.innerText = "";
@@ -307,7 +309,7 @@ function calcRoute(map, directionsRenderer, directionsService, startPos, data) {
 function mapController(map, directionsRenderer, directionsService) {
     console.log("mapController");
     if (selectedState === 'Select a US state.') {
-       window.location.href = '../national-park-locator/index.html';
+        window.location.href = '../national-park-locator/index.html';
     } else {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
